@@ -10,7 +10,9 @@
             <p class="answer__text">{{ answer }}</p>
           </div>
         </div>
-        <h1 class="calck__content__massege">{{ massege }}</h1>
+        <div class="calck__error">
+          <h1 class="calck__massege">{{ massege }}</h1>
+        </div>
         <div class="calck__content">
           <button @click="numbPushOne" class="calck__content__item calck__content__item-numb">1</button>
           <button @click="numbPushTwo" class="calck__content__item calck__content__item-numb">2</button>
@@ -29,54 +31,82 @@
 export default {
   data() {
     return {
-      answer: null,
+      answer: '',
       firstNumb: '',
-      znak: null,
+      znak: '',
       secondNumb: '',
       massege: ''
     }
   },
   methods: {
     numbPushZero() {
-      if (znak === null) {
-        this.firstNumb = this.firstNumb + '0'
+      this.massege = ''
+      if (this.znak === '') {
+        this.firstNumb += '0'
       } else {
         this.secondNumb += '0'
       }
     },
     numbPushOne() {
-      if (znak === null) {
+      this.massege = ''
+      if (this.znak === '') {
         this.firstNumb += '1'
       } else {
         this.secondNumb += '1'
       }
     },
     numbPushTwo() {
-      if (znak === null) {
+      this.massege = ''
+      if (this.znak === '') {
         this.firstNumb += '2'
       } else {
         this.secondNumb += '2'
       }
     },
     numbPushThree() {
-      if (znak === null) {
+      this.massege = ''
+      if (this.znak === '') {
         this.firstNumb += '3'
       } else {
         this.secondNumb += '3'
       }
     },
     plusPush() {
-      this.znak = '+'
+      if (this.firstNumb === '') {
+        this.massege = 'Нет примера'
+      }
+      else {
+        this.znak = '+'
+      }
     },
     minusPush() {
-      this.znak = '-'
+      if (this.firstNumb === '') {
+        this.massege = 'Нет примера'
+      }
+      else {
+        this.znak = '-'
+      }
     },
     answerPush() {
-      // if (this.secondNumb === null) {
-      //   massege = 'Пример написан не до конца'
-      // } else {
-      this.answer = Number(this.firstNumb) + Number(this.secondNumb)
-      // }
+      if (this.secondNumb === '') {
+        this.massege = 'Пример еще не дописан'
+      }
+      else if (this.answer) {
+        this.firstNumb = ''
+        this.secondNumb = ''
+        this.znak = ''
+        this.answer = ''
+        this.massege = ''
+      }
+      else {
+        if (this.znak === '+') {
+          this.answer = Number(this.firstNumb) + Number(this.secondNumb)
+        } else {
+          this.answer = Number(this.firstNumb) - Number(this.secondNumb)
+        }
+        this.massege = 'Нажмите равно для нового примера'
+      }
+
     }
   }
 }
@@ -104,7 +134,7 @@ export default {
 
 .container__calck {
   width: 400px;
-  height: 360px;
+  height: 380px;
   background-color: rgb(0, 0, 0);
   display: flex;
   flex-direction: column;
@@ -123,6 +153,7 @@ export default {
     width: 29%;
     height: 60px;
     margin: 20px 20px 0 0;
+    overflow-y: scroll;
 
     background-color: white;
     border: 2px black solid;
@@ -137,6 +168,8 @@ export default {
     width: 61%;
     height: 60px;
     margin: 20px 0 0 20px;
+    overflow-y: scroll;
+
 
     background-color: white;
     border: 2px black solid;
@@ -160,6 +193,25 @@ export default {
     color: rgb(0, 0, 0);
 
   }
+}
+
+.calck__error {
+  margin: 10px 20px;
+  width: 90%;
+  height: 40px;
+  border-bottom: 1px solid rgb(209, 139, 8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.calck__massege {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: rgb(209, 139, 8);
+  text-align: center;
+
 }
 
 .calck__content {
